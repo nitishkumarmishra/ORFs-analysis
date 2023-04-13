@@ -1,0 +1,59 @@
+#!/bin/bash
+
+source /hpcf/apps/conda3/install/5.1.0/bin/activate cutadaptenv
+module load java/1.8.0_301
+module load parallel/20201222
+module load python/3.7.0
+#module load R/4.1.0
+module load R/4.2.2
+module load gcc/9.1.0
+module load homer
+module load samtools
+## the following package need to be installed in R: "ggplot2", "gplots", "reshape", "grid", "tools", "gsalib"
+
+
+
+export RPROF=/research/groups/blancgrp/home/nmishra/EMT_data/Total_RNAseq/Riboprofiling-RSEM-BAM
+export SCRATCH=/research/groups/blancgrp/home/nmishra/EMT_data/Total_RNAseq/Riboprofiling-RSEM-BAM/scratch
+export TMPPROJDIR=$SCRATCH/tmpprojdir
+export PACKAGES=$RPROF/packages
+export BLANCHARDLABXFER=/home/$(whoami)/fastq/xfer
+export BLANCHARDLABSTORE=/home/$(whoami)/fastq/lab_data
+
+mkdir -p $TMPPROJDIR
+
+export BIOBAMBAM="$PACKAGES/biobambam2-2.0.79-release-20171006114010/x86_64-etch-linux-gnu/bin"
+export COREUTILS="$PACKAGES/coreutils/bin"
+export GATK="$PACKAGES/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef/GenomeAnalysisTK.jar"
+export PICARD="$PACKAGES/picard/picard.jar"
+export STAR="~/.conda/envs/cutadaptenv/bin/STAR"
+export LOFREQ="$PACKAGES/lofreq_star-2.1.5/bin/lofreq"
+export BAMREADCOUNT="$PACKAGES/bam-readcount/bin/bam-readcount" 
+export RSEM="/research_jude/rgs01_jude/groups/blancgrp/projects/rRNA_variation/common/rdna_variant_calling/packages/RSEM_tutorial-master/software/RSEM-1.2.25"
+export HOMER="/research/groups/blancgrp/home/nmishra/EMT_data/Total_RNAseq/Riboprofiling-RSEM-BAM/HOMER/bin"
+
+# options for bedtools
+export  LC_COLLATE="C"
+export  LC_ALL="C"
+
+
+function  deleteIfExists()  {
+
+        for  VARX  in  "$@"
+        do
+                if [ ! -z "$VARX" ]; then
+                        if [ -s "$VARX" ]; then
+                                rm  "$VARX"
+                        fi
+                else
+                        echo -e "\n\n\nERRROR  in  \"deleteIfExists\":  argument is empty!!! VARX=[$VARX]"
+                        exit 1
+                fi
+        done # VARX
+
+} # deleteIfExists
+
+export  -f  deleteIfExists
+
+
+
