@@ -23,7 +23,7 @@ suppressMessages(suppressWarnings(library("tidyverse")))
 
 ################################################################################
 # Make list of HOMER motif result text file and make dataframe for the analysis
-data_dir <- "2023.emt.rprof"
+data_dir <- "2023.polysome.emt.rprof"
 csv_files <- fs::dir_ls(data_dir, regexp = "\\.tests.plot.tdf.txt", recurse = TRUE)
 
 ################################################################################
